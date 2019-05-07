@@ -1,13 +1,11 @@
 # ICS2O-Summative
-
-
-//main file
-var person;
+//MAIN FILE
+ var person;
 var scenenum=0;
-var currentScene=1;
+var currentScene=0;
 
 function setup() {
-  createCanvas(1200, 850);
+  createCanvas(1250, 900);
   person = new Person();     
 }
 
@@ -35,6 +33,60 @@ function draw() {
 
   
 }
+
+
+
+
+//drawing scenes
+function mouseClicked() {
+  currentScene++;
+    //if (currentScene === 1) {
+    //    drawScene2();
+    //    console.log(currentScene);
+    //} else if (currentScene === 3) {
+    //    drawScene1();
+    //}
+}
+
+
+
+//all scenes  
+  function drawScene2(){
+  background(51);
+  translate(-person.pos.x,0);
+  var gravity = createVector(0,0.4);
+  person.applyForce(gravity);
+  if(mouseIsPressed){
+  
+  var force = createVector(-0.1,0);
+  person.applyForce(force);
+  }
+  person.update();
+  person.edges();
+    person.display();
+    //pop();
+  fill(250,0,60);
+  rect(400, height-50,200,60);
+  }
+
+
+ function drawScene1(){
+// currentScene = 1;
+ background(200, 200, 200);
+ fill(32, 34, 41);
+ textSize(100);
+ text(" play game", 10, height/2);
+ }
+ 
+ 
+ function drawScene3(){
+   //currentScene = 3;
+   background(200, 200, 200);
+   fill(32, 34, 41);
+   textSize(100);
+   text("end of game", 10, height/2);
+ }
+
 
 
 //person
@@ -68,3 +120,25 @@ function Person() {
   }
 }
 
+
+//HTML FILE
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
+  <script language="javascript" type="text/javascript" src="character.js"></script>
+  <script language="javascript" type="text/javascript" src="person.js"></script>
+  <script language="javascript" type="text/javascript" src="p5js-temp-game_for_the_kids987446559228305290.js"></script>
+  <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
+
+  <!-- This line removes any default padding and style.
+       You might only need one of these values set. -->
+  <style> body { padding: 0; margin: 0; } </style>
+</head>
+
+<body>
+</body>
+</html>
