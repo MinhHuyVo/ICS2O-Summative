@@ -5,6 +5,20 @@ var btnPLAY = {
     height: 40,
     content:"PLAY"
 };
+var btnEASY = {
+    x: 550,
+    y: 200,
+    width: 150,
+    height: 40,
+    content:"EASY"
+};
+var btnHARD = {
+    x: 550,
+    y: 250,
+    width: 150,
+    height: 40,
+    content:"HARD"
+};
 var btnABU = {
     x: 320,
     y: 250,
@@ -33,6 +47,7 @@ var btnMENU = {
     height: 50,
     content:"MENU"
 };
+var choosinglevels;
 var fish;
 var score=0;
 var gameover;
@@ -89,6 +104,7 @@ downobs.prototype.draw = function() {
 
 function drawButton (btn) {
   fill(120,109,94);
+  stroke(30);
   rectMode(CENTER);
   rect(btn.x    , btn.y, btn.width,   btn.height, 5);
   fill(0, 0, 0);
@@ -121,6 +137,7 @@ function preload() {
     dangerous1 = loadImage('DANGEROUS1.png')
     hearts = loadImage('hearts.png')
     gameover = loadImage('gameover.jpg')
+    choosinglevels = loadImage('choosinglevels.PNG')
     characterspiderman = loadImage('spiderman.PNG')
     fish = loadImage('fish1.png')
     normalFont = loadFont("normal.ttf")
@@ -137,7 +154,7 @@ function setup() {
   person = new Person();
   for (let a = 0; a < 100; a++) {  
      
-    sticks.push(new Stick(a * 150 + 300, random(20,270)));
+    sticks.push(new Stick(a * 150 + 300, random(20,280)));
     backgroundx2=width;
     
     
@@ -165,6 +182,16 @@ function keyPressed(){
   if (sceneNum == 2) {
     if (key == 'r'){
       sceneNum=1;
+      person.pos.y=150;
+      person.vel.y=0;
+      
+      backgroundx1=0;
+      backgroundx2=width;
+      
+    }
+  } else if (sceneNum == 6) {
+    if (key == 'r'){
+      sceneNum=5;
       person.pos.y=150;
       person.vel.y=0;
       
@@ -271,6 +298,7 @@ function draw() {
   } else if (remaininghearts===0) {
     image(gameover,0,0,640,390)
     drawButton(btnMENU);
+    
   } else if (sceneNum===5) {
     background(67, 181, 11);
       image(backgroundimg, backgroundx1, 0 ,width, height);
@@ -282,7 +310,6 @@ function draw() {
         downobss[b].draw();
       }
       for ( var a=0; a < remaininghearts ; a++) {
-        
         image(hearts,a*30+450,15,50,25);
       }
       
@@ -292,15 +319,12 @@ function draw() {
       if (backgroundx2 < -width){
         backgroundx2 = width;
       }
-    
-      translate(-person.pos.x,0);
-      
-      
+      translate(-person.pos.x*2,0);
       var gravity = createVector(0,0.1);
       person.applyForce(gravity);
       fill(255,0,0);	
-      text ('Amount of jumps: ' + i,520 + person.pos.x,70);
-      text ('Your score: ' + score,520 + person.pos.x,100);
+      text ('Amount of jumps: ' + i,520 + person.pos.x*2,70);
+      text ('Your score: ' + score,520 + person.pos.x*2,100);
       person.update();
       person.edges(sticks[a]);
       person.displayspiderman();
@@ -308,11 +332,25 @@ function draw() {
       fill(0);
       for (var a = 0; a < sticks.length; a++) {
         sticks[a].draw();
-        person.checkForStickGrab(sticks[a]);
+        person.checkForStickGrabHard(sticks[a]);
         person.checkForScore(sticks[a]);
       }
-      
-      
+  } else if (sceneNum===6) {
+    background (50,100,200);
+    image(endingimg,0,0,640, 360);
+    fill (0);
+    textSize(30);
+    text ('You are doing a great job!!!',320,50);
+    text ('You have ' + remaininghearts + ' hearts left',320,80);
+    text ('Press r to try again',320,110);
+  drawButton(btnMENU);
+    
+  } else if (sceneNum===7) {
+    image(choosinglevels,0,0,640,360);
+    textSize(30);
+    text('Choose your preferred level',320,50);
+    drawButton(btnEASY);
+    drawButton(btnHARD);
   }
 }
 
@@ -329,9 +367,19 @@ mouseClicked = function() {
        
     }
   }
+  if (sceneNum===7) {
+   if (isMouseInside(btnEASY)) {
+        sceneNum=1;
+    }
+    if (isMouseInside(btnHARD)) {
+      
+        sceneNum=5;
+       
+    }
+  }
   if (sceneNum===0) {
     if (isMouseInside(btnPLAY)) {
-      sceneNum=1;
+      sceneNum=7;
       person.pos.y=150;
       person.vel.y=0;
       i=0;
@@ -346,7 +394,7 @@ mouseClicked = function() {
       sceneNum=4;
     }
   }
-  if (sceneNum===2 || sceneNum===3 || sceneNum === 4 || sceneNum===5) {
+  if (sceneNum===2 || sceneNum===3 || sceneNum === 4 || sceneNum===5 || sceneNum===6 || sceneNum===7) {
     
     if (isMouseInside(btnMENU)) {
         sceneNum=0;
