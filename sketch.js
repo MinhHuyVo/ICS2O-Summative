@@ -209,7 +209,11 @@ var rightAnswerPos = [];
 
 
 function setup() {
-  createCanvas(640, 360);
+  var cnv = createCanvas(640, 360);
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, y);
+  background(255, 0, 200);
   jumpingSound = loadSound ('jumpingsound.wav')
   losingSound = loadSound ('losing.wav')
   answerWrong = loadSound ('wrong.mp3')
